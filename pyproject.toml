@@ -1,0 +1,16 @@
+[project]
+name = "RLAlgs"
+version = "0.1.0"
+description = ""
+authors = [{ name = "axect", email = "ax2ct@outlook.com" }]
+dependencies = [
+    "numpy>=1.26.1",
+    "matplotlib>=3.8.0",
+    "pyright>=1.1.332",
+    "mypy>=1.6.1",
+    "pytype>=2023.10.17",
+    "pyre>=1.12.3",
+]
+requires-python = ">=3.11,<3.13"
+readme = "README.md"
+license = { text = "MIT" }
