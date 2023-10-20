@@ -108,7 +108,7 @@ impl MarkovDecisionProcess<(usize, usize), GridWorldAction> for GridWorld {
             return None;
         }
 
-        let (x, y) = self.get_current_state();
+        let &(x, y) = state;
 
         let x_max = self.num_x - 1;
         let y_max = self.num_y - 1;

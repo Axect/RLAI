@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 pub trait ValuePredictor<S> {
     fn predict(&mut self, s: &S, r: f64);
+    fn get_value_function(&self) -> &HashMap<S, f64>;
 }
 
 pub struct EveryvisitMC<S: Eq + std::hash::Hash + Clone> {
@@ -32,6 +33,10 @@ impl<S: Eq + std::hash::Hash + Clone> EveryvisitMC<S> {
 
     pub fn get_value(&self, s: &S) -> Option<f64> {
         self.value_function.get(s).cloned()
+    }
+
+    pub fn get_value_function(&self) -> &HashMap<S, f64> {
+        &self.value_function
     }
 
     pub fn get_stepsize(&mut self, t: usize, s: &S) -> f64 {
