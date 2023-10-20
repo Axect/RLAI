@@ -6,13 +6,12 @@ import numpy as np
 import scienceplots
 from PIL import Image
 
-goal_state = (4, 3)
-terminal_states = [(2, 4), (4, 0)]
-
 # Import parquet file
 df_first = pd.read_parquet("./mc-epsilon_greedy-first.parquet")
 df_test = pd.read_parquet("./mc-epsilon_greedy-test.parquet")
 df_length = pd.read_parquet("./mc-epsilon_greedy-length.parquet")
+df_goal = pd.read_parquet("./mc-epsilon_greedy-goal.parquet")
+df_terminal = pd.read_parquet("./mc-epsilon_greedy-terminal.parquet")
 
 # Prepare Data to Plot
 x_first = df_first["episode_x"].to_numpy(dtype=np.int32)
@@ -26,6 +25,15 @@ r_test = df_test["reward"]
 length = df_length["length"]
 x_length = np.arange(1, len(length) + 1)
 
+x_goal = df_goal["goal_x"].to_numpy(dtype=np.int32)
+y_goal = df_goal["goal_y"].to_numpy(dtype=np.int32)
+
+x_terminal = df_terminal["terminal_x"].to_numpy(dtype=np.int32)
+y_terminal = df_terminal["terminal_y"].to_numpy(dtype=np.int32)
+
+goal_state = (x_goal[0], y_goal[0])
+terminal_states = list(zip(x_terminal, y_terminal))
+
 print(df_first)
 print(df_test)
 
@@ -36,7 +44,7 @@ print(df_test)
 frames = []
 for idx in range(1, len(x_first) + 1):
     with plt.style.context(["science", "nature"]):
-        fig, ax = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=(4, 4), dpi=300)
         ax.autoscale(tight=True)
         ax.set_title("First Visit")
         ax.set_xlim(-0.5, 4.5)
@@ -88,7 +96,7 @@ frames[0].save(
 frames = []
 for idx in range(1, len(x_test) + 1):
     with plt.style.context(["science", "nature"]):
-        fig, ax = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=(4, 4), dpi=300)
         ax.autoscale(tight=True)
         ax.set_title("Test")
         ax.set_xlim(-0.5, 4.5)
