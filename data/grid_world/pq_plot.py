@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 from matplotlib.patches import Rectangle
 import numpy as np
 import scienceplots
