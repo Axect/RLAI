@@ -3,7 +3,7 @@ use peroxide::fuga::*;
 use rlai::base::policy::{EpsilonGreedyValuePolicy, Policy};
 use rlai::base::process::MarkovDecisionProcess;
 use rlai::env::grid_world::GridWorld;
-use rlai::learning::util::ConstantStepsize;
+use rlai::learning::util::InverseTimeDecay;
 use rlai::learning::value_prediction::{EveryvisitMC, ValuePredictor};
 use std::collections::HashMap;
 
@@ -11,7 +11,8 @@ fn main() {
     let goal_state = (4, 3);
     let terminal_states = vec![(1, 0), (1, 1), (1, 2), (1, 3), (3, 4), (3, 3)];
     let env = GridWorld::new(5, 5, (0, 0), goal_state, terminal_states.clone());
-    let stepsize_scheduler = ConstantStepsize::new(0.01);
+    //let stepsize_scheduler = ConstantStepsize::new(0.01);
+    let stepsize_scheduler = InverseTimeDecay::new(1f64);
     let mut policy = EpsilonGreedyValuePolicy::new(&env, HashMap::new(), 0.1);
     let mut value_predictor: EveryvisitMC<(usize, usize)> =
         EveryvisitMC::new(HashMap::new(), Box::new(stepsize_scheduler), 0.95);
