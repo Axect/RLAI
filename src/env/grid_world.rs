@@ -8,7 +8,7 @@ use GridWorldAction as GWA;
 pub struct GridWorld {
     num_x: usize,
     num_y: usize,
-    current_state: (usize, usize),
+    init_state: (usize, usize),
     goal_state: (usize, usize),
     terminal_states: Vec<(usize, usize)>,
 }
@@ -25,14 +25,14 @@ impl GridWorld {
     pub fn new(
         num_x: usize,
         num_y: usize,
-        current_state: (usize, usize),
+        init_state: (usize, usize),
         goal_state: (usize, usize),
         terminal_states: Vec<(usize, usize)>,
     ) -> Self {
         GridWorld {
             num_x,
             num_y,
-            current_state,
+            init_state,
             goal_state,
             terminal_states,
         }
@@ -43,8 +43,8 @@ impl GridWorld {
     pub fn get_num_y(&self) -> usize {
         self.num_y
     }
-    pub fn get_current_state(&self) -> (usize, usize) {
-        self.current_state
+    pub fn get_init_state(&self) -> (usize, usize) {
+        self.init_state
     }
     pub fn get_goal_state(&self) -> (usize, usize) {
         self.goal_state

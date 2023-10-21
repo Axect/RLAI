@@ -41,7 +41,7 @@ impl InverseTimeDecay {
 
 impl<S> StepsizeScheduler<S> for InverseTimeDecay {
     fn stepsize(&mut self, t: usize, _s: &S) -> f64 {
-        self.c / t as f64
+        self.c / (t as f64 + self.c)
     }
 }
 

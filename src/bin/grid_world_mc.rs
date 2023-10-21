@@ -4,7 +4,7 @@ use rlai::base::policy::{EpsilonGreedyValuePolicy, Policy};
 use rlai::base::process::MarkovDecisionProcess;
 use rlai::env::grid_world::GridWorld;
 use rlai::learning::util::ConstantStepsize;
-use rlai::learning::value_prediction::EveryvisitMC;
+use rlai::learning::value_prediction::{EveryvisitMC, ValuePredictor};
 use std::collections::HashMap;
 
 fn main() {
@@ -29,7 +29,7 @@ fn main() {
     for _ in 0..n {
         // 1. Generate an episode
         let mut episode = Vec::new();
-        let mut current_state = env.get_current_state();
+        let mut current_state = env.get_init_state();
         loop {
             let action = policy.gen_action(&current_state).unwrap();
             match env.step(&current_state, &action) {
@@ -62,7 +62,7 @@ fn main() {
     // - Turn off random policy
     policy.turn_off_random();
     let mut test_episode = Vec::new();
-    let mut current_state = env.get_current_state();
+    let mut current_state = env.get_init_state();
     loop {
         let action = policy.gen_action(&current_state).unwrap();
         match env.step(&current_state, &action) {
