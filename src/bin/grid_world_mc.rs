@@ -13,9 +13,15 @@ fn main() {
     let env = GridWorld::new(5, 5, (0, 0), goal_state, terminal_states.clone());
     //let stepsize_scheduler = ConstantStepsize::new(0.01);
     let stepsize_scheduler = InverseTimeDecay::new(1f64);
-    let mut policy = EpsilonGreedyValuePolicy::new(&env, HashMap::new(), 0.1);
+
+    let mut value_function = HashMap::new();
+    for s in env.states() {
+        value_function.insert(s, 0f64);
+    }
+
+    let mut policy = EpsilonGreedyValuePolicy::new(&env, value_function.clone(), 0.1);
     let mut value_predictor: EveryvisitMC<(usize, usize)> =
-        EveryvisitMC::new(HashMap::new(), Box::new(stepsize_scheduler), 0.95);
+        EveryvisitMC::new(value_function.clone(), Box::new(stepsize_scheduler), 0.95);
 
     let mut episodes = vec![];
     let n = 500;

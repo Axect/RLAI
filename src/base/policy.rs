@@ -43,19 +43,35 @@ impl<'a, S: Eq + std::hash::Hash + Clone, A: Clone, M: MarkovDecisionProcess<S, 
     fn gen_action(&self, state: &S) -> Option<A> {
         let mdp = self.get_mdp();
         let v = self.get_value_function();
-        mdp.actions_at(state).into_iter().max_by(|a, b| {
-            let value_a = mdp
+        let actions = mdp.actions_at(state);
+        if actions.is_empty() {
+            return None;
+        }
+
+        // 1. Find max value
+        let mut max_value = std::f64::MIN;
+        for a in actions.iter() {
+            let value = mdp
                 .transition(state, a)
                 .and_then(|s| v.get(&s))
                 .unwrap_or(&0.0);
-            let value_b = mdp
-                .transition(state, b)
+            max_value = max_value.max(*value);
+        }
+
+        // 2. Find max action
+        let mut max_action = vec![];
+        for a in actions.iter() {
+            let value = mdp
+                .transition(state, a)
                 .and_then(|s| v.get(&s))
                 .unwrap_or(&0.0);
-            value_a
-                .partial_cmp(value_b)
-                .unwrap_or(std::cmp::Ordering::Equal)
-        })
+            if value == &max_value {
+                max_action.push(a.clone());
+            }
+        }
+
+        // 3. Choose random action
+        Some(max_action.into_iter().choose(&mut thread_rng()).unwrap())
     }
 }
 
